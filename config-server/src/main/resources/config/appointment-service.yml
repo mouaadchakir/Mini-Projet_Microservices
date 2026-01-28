@@ -40,9 +40,9 @@ resilience4j:
   retry:
     instances:
       patientService:
-        maxAttempts: 3
+        maxAttempts: 3  # ==> Retry (3 fois)
         waitDuration: 500ms
   timelimiter:
     instances:
       patientService:
-        timeoutDuration: 2s
+        timeoutDuration: 2s  # ==> Timeout 2 secondes

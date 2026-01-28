@@ -42,14 +42,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<Appointment> getAppointmentsByPatient(Long patientId) {
         return appointmentRepository.findByPatientId(patientId);
     }
-
+    //Circuit Breaker 
     @CircuitBreaker(name = "patientService", fallbackMethod = "patientServiceFallback")
     @Retry(name = "patientService")
     @TimeLimiter(name = "patientService")
     public CompletableFuture<Void> validatePatient(Long patientId) {
         return CompletableFuture.runAsync(() -> patientClient.getPatientById(patientId));
     }
-
+    //Fallback
     public CompletableFuture<Void> patientServiceFallback(Long patientId, Throwable throwable) {
         return CompletableFuture.failedFuture(new IllegalStateException("Patient service unavailable, please try later"));
     }
